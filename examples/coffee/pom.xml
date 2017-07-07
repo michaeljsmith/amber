@@ -15,11 +15,6 @@
       <artifactId>amber</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.wizen.amber</groupId>
-      <artifactId>amber-compiler</artifactId>
-      <version>${project.version}</version>
-    </dependency>
   </dependencies>
 
   <build>
