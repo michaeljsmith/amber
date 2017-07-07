@@ -32,6 +32,12 @@
       <artifactId>amber</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
+
+	<dependency>
+	  <groupId>com.google.dagger</groupId>
+	  <artifactId>dagger</artifactId>
+	  <version>2.11</version>
+	</dependency>
   </dependencies>
 
   <build>
@@ -43,6 +49,18 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+		  <annotationProcessorPaths>
+			<path>
+			  <groupId>com.google.dagger</groupId>
+			  <artifactId>dagger-compiler</artifactId>
+			  <version>2.11</version>
+			</path>
+			<path>
+              <groupId>com.google.auto.service</groupId>
+              <artifactId>auto-service</artifactId>
+              <version>${auto-service.version}</version>
+			</path>
+		  </annotationProcessorPaths>
         </configuration>
       </plugin>
     </plugins>
