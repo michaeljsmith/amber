@@ -13,7 +13,6 @@
   <modules>
     <module>amber</module>
     <module>amber-compiler</module>
-    <module>examples/coffee</module>
   </modules>
 
 </project>

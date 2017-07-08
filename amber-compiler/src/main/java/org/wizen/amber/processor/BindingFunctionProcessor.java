@@ -8,7 +8,9 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic.Kind;
 
 import org.wizen.amber.processor.ProcessingEnvironmentRoundModule.Foo;
 
@@ -25,7 +27,13 @@ public class BindingFunctionProcessor extends AbstractProcessor {
         .processingEnvironmentRoundModule(new ProcessingEnvironmentRoundModule(processingEnv))
         .build()
         .foo();
-    foo.foo();
+    //foo.foo();
+    for (TypeElement annotation : annotations) {
+      Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
+      for (Element element : annotatedElements) {
+        processingEnv.getMessager().printMessage(Kind.ERROR, "FOUND ANNOTATED ELEMENT", element);
+      }
+    }
     return true;
   }
 }
