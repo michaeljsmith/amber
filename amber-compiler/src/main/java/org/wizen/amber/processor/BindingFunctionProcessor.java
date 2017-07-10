@@ -11,6 +11,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
@@ -18,6 +19,8 @@ import javax.tools.JavaFileObject;
 import org.wizen.amber.processor.ProcessingEnvironmentRoundModule.Foo;
 
 import com.google.auto.service.AutoService;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.TypeSpec;
 
 @SupportedAnnotationTypes("org.wizen.amber.BindingFunction")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
@@ -38,9 +41,9 @@ public class BindingFunctionProcessor extends AbstractProcessor {
         JavaFileObject builderFile;
         try {
           builderFile = processingEnv.getFiler().createSourceFile("Foo");
+          JavaFile generatedFile = generateClassFile("Foo");
           try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
-            out.println("package foo;");
-            out.println("public class Foo {}");
+            generatedFile.writeTo(out);
           }
         } catch (IOException e) {
           // TODO Auto-generated catch block
@@ -50,5 +53,13 @@ public class BindingFunctionProcessor extends AbstractProcessor {
       }
     }
     return true;
+  }
+
+  private JavaFile generateClassFile(String name) {
+    TypeSpec cls =
+        TypeSpec.classBuilder(name)
+            .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+            .build();
+    return JavaFile.builder("out", cls).build();
   }
 }
