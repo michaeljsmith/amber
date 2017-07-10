@@ -21,6 +21,12 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>22.0</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.google.auto.service</groupId>
       <artifactId>auto-service</artifactId>
       <version>${auto-service.version}</version>
@@ -37,6 +43,27 @@
 	  <groupId>com.google.dagger</groupId>
 	  <artifactId>dagger</artifactId>
 	  <version>2.11</version>
+	</dependency>
+
+	<dependency>
+	  <groupId>junit</groupId>
+	  <artifactId>junit</artifactId>
+	  <version>4.8.1</version>
+	  <scope>test</scope>
+	</dependency>
+
+	<dependency>
+	  <groupId>com.google.truth</groupId>
+	  <artifactId>truth</artifactId>
+	  <version>0.34</version>
+	  <scope>test</scope>
+	</dependency>
+
+	<dependency>
+	  <groupId>com.google.testing.compile</groupId>
+	  <artifactId>compile-testing</artifactId>
+	  <version>0.11</version>
+	  <scope>test</scope>
 	</dependency>
   </dependencies>
 
