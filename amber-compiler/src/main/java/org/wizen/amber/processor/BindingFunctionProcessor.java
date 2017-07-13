@@ -14,11 +14,14 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
+
+import org.wizen.amber.extraction.BindingClass;
+
 import javax.tools.JavaFileObject;
 
-import org.wizen.amber.processor.ProcessingEnvironmentRoundModule.Foo;
-
 import com.google.auto.service.AutoService;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableSet;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 
@@ -29,11 +32,13 @@ public class BindingFunctionProcessor extends AbstractProcessor {
 
   @Override
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-    Foo foo = DaggerRoundComponent.builder()
-        .processingEnvironmentRoundModule(new ProcessingEnvironmentRoundModule(processingEnv))
-        .build()
-        .foo();
-    //foo.foo();
+    RoundComponent roundComponent =
+        DaggerRoundComponent.builder()
+            .setProcessingEnvironment(processingEnv)
+            .build();
+
+    roundComponent.compiledClasses();
+
     for (TypeElement annotation : annotations) {
       Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
       for (Element element : annotatedElements) {
