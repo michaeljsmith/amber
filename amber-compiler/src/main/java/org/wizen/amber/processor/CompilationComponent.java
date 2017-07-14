@@ -8,11 +8,11 @@ import javax.inject.Provider;
 import org.wizen.amber.compilation.CompilationModule;
 import org.wizen.amber.compilation.CompiledClasses;
 import org.wizen.amber.compilation.classes.BindingClassCompiler;
-import org.wizen.amber.compilation.output.OutputModule;
-import org.wizen.amber.compilation.output.RoundWriter;
 import org.wizen.amber.extraction.BindingClass;
 import org.wizen.amber.extraction.BindingClasses;
 import org.wizen.amber.extraction.ExtractionModule;
+import org.wizen.amber.output.OutputModule;
+import org.wizen.amber.output.RoundWriter;
 
 import com.google.common.collect.ImmutableSet;
 import com.squareup.javapoet.TypeSpec;

@@ -2,8 +2,8 @@ package org.wizen.amber.processor;
 
 import javax.annotation.processing.Filer;
 
-import org.wizen.amber.compilation.output.OutputModule;
-import org.wizen.amber.compilation.output.RoundWriter;
+import org.wizen.amber.output.OutputModule;
+import org.wizen.amber.output.RoundWriter;
 
 import dagger.BindsInstance;
 import dagger.Component;

@@ -1,4 +1,4 @@
-package org.wizen.amber.compilation.output;
+package org.wizen.amber.output;
 
 import java.io.IOException;
 import java.io.PrintWriter;

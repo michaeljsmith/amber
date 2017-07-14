@@ -1,4 +1,4 @@
-package org.wizen.amber.compilation.output;
+package org.wizen.amber.output;
 
 public interface RoundWriter {
   void writeClasses();
