@@ -3,9 +3,10 @@ package org.wizen.amber.extraction;
 import com.google.auto.value.AutoValue;
 
 @AutoValue
-public class BindingFunction {
+public abstract class BindingFunction {
+  abstract String name();
 
-  public static BindingFunction create() {
-    return new AutoValue_BindingFunction();
+  public static BindingFunction create(String name) {
+    return new AutoValue_BindingFunction(name);
   }
 }

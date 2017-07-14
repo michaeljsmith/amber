@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Filer;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -32,12 +33,16 @@ public class BindingFunctionProcessor extends AbstractProcessor {
 
   @Override
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-    RoundComponent roundComponent =
-        DaggerRoundComponent.builder()
-            .setProcessingEnvironment(processingEnv)
+    ExtractionComponent extractionComponent =
+        DaggerExtractionComponent.builder().build();
+    CompilationComponent compilationComponent =
+        DaggerCompilationComponent.builder()
+            .setExtractionComponent(extractionComponent)
             .build();
+    OutputComponent outputComponent =
+        DaggerOutputComponent.builder().setCompilationComponent(compilationComponent).build();
 
-    roundComponent.compiledClasses();
+    outputComponent.roundWriter().writeClasses();
 
     for (TypeElement annotation : annotations) {
       Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
@@ -45,7 +50,8 @@ public class BindingFunctionProcessor extends AbstractProcessor {
         //processingEnv.getMessager().printMessage(Kind.ERROR, "FOUND ANNOTATED ELEMENT", element);
         JavaFileObject builderFile;
         try {
-          builderFile = processingEnv.getFiler().createSourceFile("Foo");
+          Filer filer = processingEnv.getFiler();
+          builderFile = filer.createSourceFile("Foo");
           JavaFile generatedFile = generateClassFile("Foo");
           try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
             generatedFile.writeTo(out);

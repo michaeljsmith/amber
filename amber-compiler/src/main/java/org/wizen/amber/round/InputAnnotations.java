@@ -1,13 +1,13 @@
-package org.wizen.amber.processing;
+package org.wizen.amber.round;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.inject.Scope;
+import javax.inject.Qualifier;
 
 @Retention(RetentionPolicy.SOURCE)
-@Scope
-public @interface RoundScope {
+@Qualifier
+public @interface InputAnnotations {
 }

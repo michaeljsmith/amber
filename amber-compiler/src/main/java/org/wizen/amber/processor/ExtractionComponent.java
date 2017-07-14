@@ -1,28 +1,14 @@
 package org.wizen.amber.processor;
 
-import org.wizen.amber.BindingFunction;
-import org.wizen.amber.compilation.functions.BindingFunctionCompilationBindingFunctionModule;
-import org.wizen.amber.compilation.functions.BindingFunctionCompilationResult;
-import org.wizen.amber.compilation.functions.BindingFunctionScope;
-import org.wizen.amber.compilation.functions.InputBindingFunction;
 import org.wizen.amber.extraction.BindingClass;
-import org.wizen.amber.extraction.BindingClassExtractionRoundModule;
 import org.wizen.amber.extraction.BindingClasses;
+import org.wizen.amber.extraction.ExtractionModule;
 
 import com.google.common.collect.ImmutableSet;
-import com.squareup.javapoet.MethodSpec;
 
-import dagger.BindsInstance;
-import dagger.Subcomponent;
+import dagger.Component;
 
-@BindingFunctionScope
-@Subcomponent(modules = {BindingClassExtractionRoundModule.class})
+@Component(modules = ExtractionModule.class)
 public interface ExtractionComponent {
-  @BindingClasses
-  ImmutableSet<BindingClass> bindingClasses();
-
-  @Subcomponent.Builder
-  static interface Builder {
-    ExtractionComponent build();
-  }
+  @BindingClasses ImmutableSet<BindingClass> bindingClasses();
 }

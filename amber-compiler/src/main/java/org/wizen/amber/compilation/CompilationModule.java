@@ -21,6 +21,9 @@ public class CompilationModule {
   ImmutableSet<TypeSpec> provideCompiledClasses(
       @BindingClasses ImmutableSet<BindingClass> bindingClasses,
       BindingClassCompiler bindingClassCompiler) {
-    return ImmutableSet.of();
+    return bindingClasses
+        .stream()
+        .map(bindingClassCompiler::compiledClass)
+        .collect(ImmutableSet.toImmutableSet());
   }
 }
