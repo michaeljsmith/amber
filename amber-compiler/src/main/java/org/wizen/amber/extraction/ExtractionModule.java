@@ -25,17 +25,31 @@ import dagger.Provides;
 public class ExtractionModule {
   @Provides
   @BindingClasses
-  ImmutableSet<BindingClass> provideBindingClasses() {
+  static ImmutableSet<BindingClass> provideBindingClasses() {
     return ImmutableSet.of(BindingClass.create("Foo", ImmutableSet.of(BindingFunction.create("foo"))));
   }
 
   @Provides
-  static Function<String, Collection<? extends Element>> provideAnnotatedElements(
+  @ClassesWithAnnotatedFunctions
+  static ImmutableSet<TypeElement> provideClassesWithAnnotatedFunctions(
+      @AnnotatedElementsLoader Function<String, Collection<? extends Element>>
+        annotatedElementsLoader) {
+    String annotationName = org.wizen.amber.BindingFunction.class.getCanonicalName();
+    Collection<? extends Element> annotatedElements = annotatedElementsLoader.apply(annotationName);
+    for (Element annotatedElement : annotatedElements) {
+      asdf();
+    }
+  }
+
+  @Provides
+  @AnnotatedElementsLoader
+  static Function<String, Collection<? extends Element>> provideAnnotatedElementsLoader(
       RoundEnvironment roundEnvironment,
-      @ElementsByName ImmutableMultimap<String, ? extends TypeElement> elementsByName) {
+      @InputAnnotationsByName ImmutableMultimap<String, ? extends TypeElement>
+          inputAnnotationsByName) {
     return name -> {
       Collection<? extends TypeElement> typeElements =
-          elementsByName.asMap().getOrDefault(name, ImmutableList.of());
+          inputAnnotationsByName.asMap().getOrDefault(name, ImmutableList.of());
       return typeElements.stream()
           .flatMap(typeElement -> roundEnvironment.getElementsAnnotatedWith(typeElement).stream())
           .collect(ImmutableList.toImmutableList());
@@ -43,8 +57,8 @@ public class ExtractionModule {
   }
 
   @Provides
-  @ElementsByName
-  static ImmutableMultimap<String, ? extends TypeElement> provideElementsByName(
+  @InputAnnotationsByName
+  static ImmutableMultimap<String, ? extends TypeElement> provideInputAnnotationsByName(
       @InputAnnotations Set<? extends TypeElement> inputAnnotations) {
     return Multimaps.index(
         inputAnnotations, annotation -> annotation.getQualifiedName().toString());
@@ -52,5 +66,13 @@ public class ExtractionModule {
 
   @Retention(RetentionPolicy.SOURCE)
   @Qualifier
-  private @interface ElementsByName {}
+  private @interface ClassesWithAnnotatedFunctions {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface AnnotatedElementsLoader {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface InputAnnotationsByName {}
 }
