@@ -27,13 +27,6 @@
     </dependency>
 
     <dependency>
-      <groupId>com.google.auto.service</groupId>
-      <artifactId>auto-service</artifactId>
-      <version>${auto-service.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.wizen.amber</groupId>
       <artifactId>amber</artifactId>
       <version>${project.parent.version}</version>
@@ -67,6 +60,24 @@
 	</dependency>
 
     <dependency>
+      <groupId>com.google.auto.value</groupId>
+      <artifactId>auto-value</artifactId>
+      <version>1.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.auto.factory</groupId>
+      <artifactId>auto-factory</artifactId>
+      <version>1.0-beta5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.auto.service</groupId>
+      <artifactId>auto-service</artifactId>
+      <version>${auto-service.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.squareup</groupId>
       <artifactId>javapoet</artifactId>
       <version>1.9.0</version>
@@ -89,14 +100,19 @@
 			  <version>2.11</version>
 			</path>
 			<path>
+              <groupId>com.google.auto.value</groupId>
+              <artifactId>auto-value</artifactId>
+              <version>1.3</version>
+			</path>
+			<path>
+              <groupId>com.google.auto.factory</groupId>
+              <artifactId>auto-factory</artifactId>
+              <version>1.0-beta5</version>
+			</path>
+			<path>
               <groupId>com.google.auto.service</groupId>
               <artifactId>auto-service</artifactId>
               <version>${auto-service.version}</version>
-			</path>
-			<path>
-              <groupId>com.google.auto.value</groupId>
-              <artifactId>auto-value</artifactId>
-              <version>1.2</version>
 			</path>
 		  </annotationProcessorPaths>
         </configuration>

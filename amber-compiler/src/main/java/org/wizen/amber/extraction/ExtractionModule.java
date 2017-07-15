@@ -3,6 +3,7 @@ package org.wizen.amber.extraction;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -11,6 +12,9 @@ import javax.inject.Qualifier;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
+import org.wizen.amber.extraction.Annotations.AnnotatedElementsLoader;
+import org.wizen.amber.extraction.Annotations.ClassesWithAnnotatedFunctions;
+import org.wizen.amber.extraction.Annotations.InputAnnotationsByName;
 import org.wizen.amber.round.InputAnnotations;
 
 import com.google.common.collect.ImmutableList;
@@ -33,12 +37,15 @@ public class ExtractionModule {
   @ClassesWithAnnotatedFunctions
   static ImmutableSet<TypeElement> provideClassesWithAnnotatedFunctions(
       @AnnotatedElementsLoader Function<String, Collection<? extends Element>>
-        annotatedElementsLoader) {
+        annotatedElementsLoader,
+      EnclosingClassFinder enclosingClassFinder) {
     String annotationName = org.wizen.amber.BindingFunction.class.getCanonicalName();
     Collection<? extends Element> annotatedElements = annotatedElementsLoader.apply(annotationName);
-    for (Element annotatedElement : annotatedElements) {
-      asdf();
-    }
+    return annotatedElements.stream()
+        .map(enclosingClassFinder::enclosingClass)
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .collect(ImmutableSet.toImmutableSet());
   }
 
   @Provides
@@ -63,16 +70,4 @@ public class ExtractionModule {
     return Multimaps.index(
         inputAnnotations, annotation -> annotation.getQualifiedName().toString());
   }
-
-  @Retention(RetentionPolicy.SOURCE)
-  @Qualifier
-  private @interface ClassesWithAnnotatedFunctions {}
-
-  @Retention(RetentionPolicy.SOURCE)
-  @Qualifier
-  private @interface AnnotatedElementsLoader {}
-
-  @Retention(RetentionPolicy.SOURCE)
-  @Qualifier
-  private @interface InputAnnotationsByName {}
 }
