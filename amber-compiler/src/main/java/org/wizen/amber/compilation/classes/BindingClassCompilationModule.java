@@ -13,7 +13,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class BindingClassCompilationBindingClassModule {
+public class BindingClassCompilationModule {
   @Provides
   @BindingClassCompilationResult
   static Optional<TypeSpec> provideBindingClassCompilationResult(

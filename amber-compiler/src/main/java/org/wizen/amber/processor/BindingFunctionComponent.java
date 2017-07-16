@@ -2,7 +2,7 @@ package org.wizen.amber.processor;
 
 import java.util.Optional;
 
-import org.wizen.amber.compilation.functions.BindingFunctionCompilationBindingFunctionModule;
+import org.wizen.amber.compilation.functions.BindingFunctionCompilationModule;
 import org.wizen.amber.compilation.functions.BindingFunctionCompilationResult;
 import org.wizen.amber.compilation.functions.BindingFunctionScope;
 import org.wizen.amber.compilation.functions.InputBindingFunction;
@@ -14,7 +14,7 @@ import dagger.BindsInstance;
 import dagger.Subcomponent;
 
 @BindingFunctionScope
-@Subcomponent(modules = {BindingFunctionCompilationBindingFunctionModule.class})
+@Subcomponent(modules = {BindingFunctionCompilationModule.class})
 public interface BindingFunctionComponent {
   @BindingFunctionCompilationResult
   Optional<MethodSpec> resultMethodSpec();

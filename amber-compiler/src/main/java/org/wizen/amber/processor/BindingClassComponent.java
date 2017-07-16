@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.inject.Provider;
 
 import org.wizen.amber.BindingFunction;
-import org.wizen.amber.compilation.classes.BindingClassCompilationBindingClassModule;
+import org.wizen.amber.compilation.classes.BindingClassCompilationModule;
 import org.wizen.amber.compilation.classes.BindingClassCompilationResult;
 import org.wizen.amber.compilation.classes.BindingClassScope;
 import org.wizen.amber.compilation.classes.InputBindingClass;
@@ -24,7 +24,7 @@ import dagger.Subcomponent;
 @Subcomponent(
     modules = {
         BindingClassComponent.SelfModule.class,
-        BindingClassCompilationBindingClassModule.class,
+        BindingClassCompilationModule.class,
     })
 public interface BindingClassComponent {
   @Module(subcomponents = BindingFunctionComponent.class)

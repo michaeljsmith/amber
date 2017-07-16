@@ -10,7 +10,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class BindingFunctionCompilationBindingFunctionModule {
+public class BindingFunctionCompilationModule {
   @Provides
   @BindingFunctionCompilationResult
   Optional<MethodSpec> provideBindingFunctionCompilationResult(
