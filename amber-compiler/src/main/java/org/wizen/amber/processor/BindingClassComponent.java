@@ -1,5 +1,7 @@
 package org.wizen.amber.processor;
 
+import java.util.Optional;
+
 import javax.inject.Provider;
 
 import org.wizen.amber.BindingFunction;
@@ -46,5 +48,5 @@ public interface BindingClassComponent {
   }
 
   @BindingClassCompilationResult
-  TypeSpec resultTypeSpec();
+  Optional<TypeSpec> resultTypeSpec();
 }

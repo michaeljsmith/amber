@@ -1,14 +1,11 @@
 package org.wizen.amber.extraction;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
 import javax.annotation.processing.RoundEnvironment;
-import javax.inject.Qualifier;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
@@ -29,8 +26,14 @@ import dagger.Provides;
 public class ExtractionModule {
   @Provides
   @BindingClasses
-  static ImmutableSet<BindingClass> provideBindingClasses() {
-    return ImmutableSet.of(BindingClass.create("Foo", ImmutableSet.of(BindingFunction.create("foo"))));
+  static ImmutableList<BindingClass> provideBindingClasses(
+      @ClassesWithAnnotatedFunctions ImmutableSet<TypeElement> classesWithAnnotatedFunctions,
+      BindingClassElementConvertor bindingClassElementConvertor) {
+    return classesWithAnnotatedFunctions.stream()
+        .map(bindingClassElementConvertor::bindingClassFromElement)
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .collect(ImmutableList.toImmutableList());
   }
 
   @Provides

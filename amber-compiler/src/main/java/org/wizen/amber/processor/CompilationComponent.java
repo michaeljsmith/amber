@@ -1,23 +1,17 @@
 package org.wizen.amber.processor;
 
-import javax.annotation.processing.Filer;
-import javax.annotation.processing.Messager;
-import javax.annotation.processing.ProcessingEnvironment;
+import java.util.Optional;
+
 import javax.inject.Provider;
 
 import org.wizen.amber.compilation.CompilationModule;
 import org.wizen.amber.compilation.CompiledClasses;
 import org.wizen.amber.compilation.classes.BindingClassCompiler;
-import org.wizen.amber.extraction.BindingClass;
 import org.wizen.amber.extraction.BindingClasses;
-import org.wizen.amber.extraction.ExtractionModule;
-import org.wizen.amber.output.OutputModule;
-import org.wizen.amber.output.RoundWriter;
 
 import com.google.common.collect.ImmutableSet;
 import com.squareup.javapoet.TypeSpec;
 
-import dagger.BindsInstance;
 import dagger.Component;
 import dagger.Module;
 import dagger.Provides;
@@ -34,7 +28,7 @@ public interface CompilationComponent {
 
   @Component.Builder
   interface Builder {
-    Builder setExtractionComponent(ExtractionComponent extractionComponent);
+    Builder setExtractionComponent(@BindingClasses ExtractionComponent extractionComponent);
 
     CompilationComponent build();
   }
@@ -45,7 +39,8 @@ public interface CompilationComponent {
     static BindingClassCompiler provideBindingClassCompiler(
         Provider<BindingClassComponent.Builder> bindingClassComponentBuilderProvider) {
       return bindingClass ->
-        bindingClassComponentBuilderProvider.get().setBindingClass(bindingClass).build().resultTypeSpec();
+          bindingClassComponentBuilderProvider.get()
+              .setBindingClass(bindingClass).build().resultTypeSpec();
     }
   }
 }

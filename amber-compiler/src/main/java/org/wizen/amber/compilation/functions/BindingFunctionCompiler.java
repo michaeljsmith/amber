@@ -1,9 +1,11 @@
 package org.wizen.amber.compilation.functions;
 
-import org.wizen.amber.BindingFunction;
+import java.util.Optional;
+
+import org.wizen.amber.extraction.BindingFunction;
 
 import com.squareup.javapoet.MethodSpec;
 
 public interface BindingFunctionCompiler {
-  MethodSpec compiledFunction(BindingFunction bindingFunction);
+  Optional<MethodSpec> compiledFunction(BindingFunction bindingFunction);
 }

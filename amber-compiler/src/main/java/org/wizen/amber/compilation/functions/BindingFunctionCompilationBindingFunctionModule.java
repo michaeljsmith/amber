@@ -1,6 +1,8 @@
 package org.wizen.amber.compilation.functions;
 
-import org.wizen.amber.BindingFunction;
+import java.util.Optional;
+
+import org.wizen.amber.extraction.BindingFunction;
 
 import com.squareup.javapoet.MethodSpec;
 
@@ -11,8 +13,8 @@ import dagger.Provides;
 public class BindingFunctionCompilationBindingFunctionModule {
   @Provides
   @BindingFunctionCompilationResult
-  MethodSpec provideBindingFunctionCompilationResult(
+  Optional<MethodSpec> provideBindingFunctionCompilationResult(
       @InputBindingFunction BindingFunction bindingFunction) {
-    return MethodSpec.methodBuilder("foo").build();
+    return Optional.of(MethodSpec.methodBuilder(bindingFunction.name()).build());
   }
 }
