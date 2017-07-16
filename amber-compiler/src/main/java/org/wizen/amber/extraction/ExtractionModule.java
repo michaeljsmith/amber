@@ -12,7 +12,6 @@ import javax.lang.model.element.TypeElement;
 import org.wizen.amber.extraction.Annotations.AnnotatedElementsLoader;
 import org.wizen.amber.extraction.Annotations.ClassesWithAnnotatedFunctions;
 import org.wizen.amber.extraction.Annotations.InputAnnotationsByName;
-import org.wizen.amber.round.InputAnnotations;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;

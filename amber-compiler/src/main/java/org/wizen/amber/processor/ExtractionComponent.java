@@ -9,7 +9,7 @@ import javax.lang.model.element.TypeElement;
 import org.wizen.amber.extraction.BindingClass;
 import org.wizen.amber.extraction.BindingClasses;
 import org.wizen.amber.extraction.ExtractionModule;
-import org.wizen.amber.round.InputAnnotations;
+import org.wizen.amber.extraction.InputAnnotations;
 
 import com.google.common.collect.ImmutableList;
 

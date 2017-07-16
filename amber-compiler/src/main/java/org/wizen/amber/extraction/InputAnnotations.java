@@ -1,4 +1,4 @@
-package org.wizen.amber.round;
+package org.wizen.amber.extraction;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,5 +9,4 @@ import javax.inject.Qualifier;
 
 @Retention(RetentionPolicy.SOURCE)
 @Qualifier
-public @interface InputAnnotations {
-}
+public @interface InputAnnotations {}
