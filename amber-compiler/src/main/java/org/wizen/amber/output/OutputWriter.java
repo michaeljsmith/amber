@@ -1,5 +1,5 @@
 package org.wizen.amber.output;
 
-public interface RoundWriter {
+public interface OutputWriter {
   void writeClasses();
 }

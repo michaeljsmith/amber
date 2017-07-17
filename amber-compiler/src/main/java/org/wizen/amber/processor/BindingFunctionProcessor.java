@@ -40,9 +40,13 @@ public class BindingFunctionProcessor extends AbstractProcessor {
             .setExtractionComponent(extractionComponent)
             .build();
     OutputComponent outputComponent =
-        DaggerOutputComponent.builder().setCompilationComponent(compilationComponent).build();
+        DaggerOutputComponent.builder()
+            .setCompilationComponent(compilationComponent)
+            .setFiler(processingEnv.getFiler())
+            .setMessager(processingEnv.getMessager())
+            .build();
 
-    outputComponent.roundWriter().writeClasses();
+    outputComponent.outputWriter().writeClasses();
 
     for (TypeElement annotation : annotations) {
       Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);

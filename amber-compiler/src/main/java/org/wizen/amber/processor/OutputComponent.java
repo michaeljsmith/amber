@@ -1,9 +1,10 @@
 package org.wizen.amber.processor;
 
 import javax.annotation.processing.Filer;
+import javax.annotation.processing.Messager;
 
 import org.wizen.amber.output.OutputModule;
-import org.wizen.amber.output.RoundWriter;
+import org.wizen.amber.output.OutputWriter;
 
 import dagger.BindsInstance;
 import dagger.Component;
@@ -12,7 +13,7 @@ import dagger.Component;
     modules = OutputModule.class,
     dependencies = CompilationComponent.class)
 public interface OutputComponent {
-  RoundWriter roundWriter();
+  OutputWriter outputWriter();
 
   @Component.Builder
   public interface Builder {
@@ -20,6 +21,9 @@ public interface OutputComponent {
 
     @BindsInstance
     Builder setFiler(Filer filer);
+
+    @BindsInstance
+    Builder setMessager(Messager messager);
 
     OutputComponent build();
   }
