@@ -33,7 +33,10 @@ class BindingClassElementConvertorInstance {
 
   public Optional<BindingClass> bindingClass() {
     return Optional.of(
-        BindingClass.create(bindingClassElement.getSimpleName().toString(), bindingFunctions()));
+        BindingClass.create(
+            bindingClassElement.getSimpleName().toString(),
+            bindingClassElement,
+            bindingFunctions()));
   }
 
   private ImmutableList<BindingFunction> bindingFunctions() {

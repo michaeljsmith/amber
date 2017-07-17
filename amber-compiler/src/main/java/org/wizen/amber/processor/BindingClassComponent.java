@@ -4,16 +4,13 @@ import java.util.Optional;
 
 import javax.inject.Provider;
 
-import org.wizen.amber.BindingFunction;
 import org.wizen.amber.compilation.classes.BindingClassCompilationModule;
 import org.wizen.amber.compilation.classes.BindingClassCompilationResult;
 import org.wizen.amber.compilation.classes.BindingClassScope;
+import org.wizen.amber.compilation.classes.CompiledClass;
 import org.wizen.amber.compilation.classes.InputBindingClass;
 import org.wizen.amber.compilation.functions.BindingFunctionCompiler;
 import org.wizen.amber.extraction.BindingClass;
-
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeSpec;
 
 import dagger.BindsInstance;
 import dagger.Module;
@@ -48,5 +45,5 @@ public interface BindingClassComponent {
   }
 
   @BindingClassCompilationResult
-  Optional<TypeSpec> resultTypeSpec();
+  Optional<CompiledClass> resultTypeSpec();
 }

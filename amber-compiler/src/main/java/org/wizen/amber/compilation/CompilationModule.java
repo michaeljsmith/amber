@@ -3,6 +3,7 @@ package org.wizen.amber.compilation;
 import java.util.Optional;
 
 import org.wizen.amber.compilation.classes.BindingClassCompiler;
+import org.wizen.amber.compilation.classes.CompiledClass;
 import org.wizen.amber.extraction.BindingClass;
 import org.wizen.amber.extraction.BindingClasses;
 
@@ -17,7 +18,7 @@ import dagger.Provides;
 public class CompilationModule {
   @Provides
   @CompiledClasses
-  ImmutableSet<TypeSpec> provideCompiledClasses(
+  ImmutableList<CompiledClass> provideCompiledClasses(
       @BindingClasses ImmutableList<BindingClass> bindingClasses,
       BindingClassCompiler bindingClassCompiler) {
     return bindingClasses
@@ -25,6 +26,6 @@ public class CompilationModule {
         .map(bindingClassCompiler::compiledClass)
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .collect(ImmutableSet.toImmutableSet());
+        .collect(ImmutableList.toImmutableList());
   }
 }

@@ -1,6 +1,10 @@
 package org.wizen.amber.compilation.classes;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Optional;
+
+import javax.inject.Qualifier;
 
 import org.wizen.amber.compilation.functions.BindingFunctionCompiler;
 import org.wizen.amber.extraction.BindingClass;
@@ -14,10 +18,12 @@ import dagger.Provides;
 
 @Module
 public class BindingClassCompilationModule {
+
   @Provides
   @BindingClassCompilationResult
-  static Optional<TypeSpec> provideBindingClassCompilationResult(
+  static Optional<CompiledClass> provideBindingClassCompilationResult(
       @InputBindingClass BindingClass bindingClass,
+      @CompiledClassName String compiledClassName,
       BindingFunctionCompiler bindingFunctionCompiler) {
     ImmutableList<MethodSpec> methods =
         bindingClass.bindingFunctions().stream()
@@ -26,8 +32,20 @@ public class BindingClassCompilationModule {
             .map(Optional::get)
             .collect(ImmutableList.toImmutableList());
     return Optional.of(
-        TypeSpec.classBuilder(bindingClass.name())
-            .addMethods(methods)
-            .build());
+        CompiledClass.create(
+            TypeSpec.classBuilder(compiledClassName)
+                .addMethods(methods)
+                .build(),
+            bindingClass.inputElement()));
   }
+
+  @Provides
+  @CompiledClassName
+  static String provideCompiledClassName(@InputBindingClass BindingClass bindingClass) {
+    return "Amber" + bindingClass.name();
+  }
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface CompiledClassName {}
 }

@@ -7,8 +7,10 @@ import javax.inject.Provider;
 import org.wizen.amber.compilation.CompilationModule;
 import org.wizen.amber.compilation.CompiledClasses;
 import org.wizen.amber.compilation.classes.BindingClassCompiler;
+import org.wizen.amber.compilation.classes.CompiledClass;
 import org.wizen.amber.extraction.BindingClasses;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.squareup.javapoet.TypeSpec;
 
@@ -24,7 +26,7 @@ import dagger.Provides;
     dependencies = ExtractionComponent.class)
 public interface CompilationComponent {
   @CompiledClasses
-  ImmutableSet<TypeSpec> compiledClasses();
+  ImmutableList<CompiledClass> compiledClasses();
 
   @Component.Builder
   interface Builder {

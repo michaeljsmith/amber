@@ -11,19 +11,21 @@ import javax.inject.Inject;
 import javax.tools.JavaFileObject;
 
 import org.wizen.amber.compilation.CompiledClasses;
+import org.wizen.amber.compilation.classes.CompiledClass;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
 
 public class OutputWriterImpl implements OutputWriter {
-  private final ImmutableSet<TypeSpec> compiledClasses;
+  private final ImmutableList<CompiledClass> compiledClasses;
   private final Filer filer;
   private final Messager messager;
 
   @Inject
   public OutputWriterImpl(
-        @CompiledClasses ImmutableSet<TypeSpec> compiledClasses, Filer filer, Messager messager) {
+        @CompiledClasses ImmutableList<CompiledClass> compiledClasses,
+        Filer filer,
+        Messager messager) {
     this.compiledClasses = compiledClasses;
     this.filer = filer;
     this.messager = messager;
@@ -31,16 +33,17 @@ public class OutputWriterImpl implements OutputWriter {
 
   @Override
   public void writeClasses() {
-    for (TypeSpec compiledClass : compiledClasses) {
+    for (CompiledClass compiledClass : compiledClasses) {
       JavaFileObject builderFile;
       try {
-        JavaFile generatedFile = JavaFile.builder("out", compiledClass).build();
-        builderFile = filer.createSourceFile(compiledClass.name);
+        JavaFile generatedFile = JavaFile.builder("out", compiledClass.typeSpec()).build();
+        builderFile = filer.createSourceFile(compiledClass.typeSpec().name);
         try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
           generatedFile.writeTo(out);
         }
       } catch (IOException e) {
-        messager.printMessage(ERROR, "Unable to open file for writing: " + e);
+        messager.printMessage(
+            ERROR, "Unable to open file for writing: " + e, compiledClass.inputElement());
       }
     }
   }
