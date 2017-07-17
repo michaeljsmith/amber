@@ -1,4 +1,4 @@
 package out;
 
-class AmberEmptyBindingFunction {
+public final class AmberEmptyBindingFunction {
 }
