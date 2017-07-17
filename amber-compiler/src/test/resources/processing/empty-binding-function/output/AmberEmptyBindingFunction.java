@@ -1,6 +1,6 @@
 package out;
 
 public final class AmberEmptyBindingFunction {
-  void foo() {
+  final public void foo() {
   }
 }
