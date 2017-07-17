@@ -62,14 +62,16 @@ class BindingFunctionElementConvertor {
     }
 
     private void checkIsMethod() throws BindingFunctionConversionException {
-      if (bindingFunctionElement.getKind() != ElementKind.METHOD)
+      if (bindingFunctionElement.getKind() != ElementKind.METHOD) {
         messager.printMessage(
             WARNING,
             String.format(
                 "@%s must only be applied to methods",
                 org.wizen.amber.BindingFunction.class.getSimpleName()),
             bindingFunctionElement);
-      throw new BindingFunctionConversionException();
+       
+        throw new BindingFunctionConversionException();
+      }
     }
 
     private Optional<String> qualifiedNameFromAnnotationMirror(AnnotationMirror annotationMirror) {
