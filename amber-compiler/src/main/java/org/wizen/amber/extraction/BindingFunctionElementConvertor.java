@@ -89,5 +89,5 @@ class BindingFunctionElementConvertor {
     }
   }
 
-  static class BindingFunctionConversionException extends Exception {}
+  private static class BindingFunctionConversionException extends Exception {}
 }

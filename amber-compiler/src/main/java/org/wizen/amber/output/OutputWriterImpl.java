@@ -36,7 +36,8 @@ public class OutputWriterImpl implements OutputWriter {
     for (CompiledClass compiledClass : compiledClasses) {
       JavaFileObject builderFile;
       try {
-        JavaFile generatedFile = JavaFile.builder("out", compiledClass.typeSpec()).build();
+        JavaFile generatedFile =
+            JavaFile.builder(compiledClass.packageName(), compiledClass.typeSpec()).build();
         builderFile = filer.createSourceFile(compiledClass.typeSpec().name);
         try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
           generatedFile.writeTo(out);

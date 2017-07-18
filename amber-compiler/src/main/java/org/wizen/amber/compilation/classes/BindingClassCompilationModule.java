@@ -32,6 +32,7 @@ public class BindingClassCompilationModule {
   @BindingClassCompilationResult
   static Optional<CompiledClass> provideBindingClassCompilationResult(
       @InputBindingClass BindingClass bindingClass,
+      @CompiledPackageName String compiledPackageName,
       @CompiledClassName String compiledClassName,
       BindingFunctionCompiler bindingFunctionCompiler,
       @CompiledClassModifiers ImmutableSet<Modifier> compiledClassModifiers) {
@@ -43,6 +44,7 @@ public class BindingClassCompilationModule {
             .collect(ImmutableList.toImmutableList());
     return Optional.of(
         CompiledClass.create(
+            compiledPackageName,
             TypeSpec.classBuilder(compiledClassName)
                 .addModifiers(compiledClassModifiers.toArray(new Modifier[0]))
                 .addMethods(methods)
@@ -72,6 +74,18 @@ public class BindingClassCompilationModule {
   }
 
   @Provides
+  @CompiledPackageName
+  static String provideCompiledPackageName(@InputPackageName String inputPackageName) {
+    return inputPackageName;
+  }
+
+  @Provides
+  @InputPackageName
+  static String provideInputPackageName(@InputBindingClass BindingClass bindingClass) {
+    return bindingClass.packageName();
+  }
+
+  @Provides
   @InputClassName
   static String provideInputClassName(@InputBindingClass BindingClass bindingClass) {
     return bindingClass.name();
@@ -92,21 +106,29 @@ public class BindingClassCompilationModule {
 
   @Retention(RetentionPolicy.SOURCE)
   @Qualifier
+  private @interface CompiledPackageName {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
   private @interface CompiledClassName {}
 
   @Retention(RetentionPolicy.SOURCE)
   @Qualifier
-  public @interface CompiledClassModifiers {}
+  private @interface CompiledClassModifiers {}
 
   @Retention(RetentionPolicy.SOURCE)
   @Qualifier
-  public @interface InputClassName {}
+  private @interface InputPackageName {}
 
   @Retention(RetentionPolicy.SOURCE)
   @Qualifier
-  public @interface InputClassElement {}
+  private @interface InputClassName {}
 
   @Retention(RetentionPolicy.SOURCE)
   @Qualifier
-  public @interface InputBindingFunctions {}
+  private @interface InputClassElement {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface InputBindingFunctions {}
 }

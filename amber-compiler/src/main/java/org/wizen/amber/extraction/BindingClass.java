@@ -7,12 +7,16 @@ import com.google.common.collect.ImmutableList;
 
 @AutoValue
 public abstract class BindingClass {
+  public abstract String packageName();
   public abstract String name();
   public abstract TypeElement inputElement();
   public abstract ImmutableList<BindingFunction> bindingFunctions();
 
   public static BindingClass create(
-      String name, TypeElement inputElement, ImmutableList<BindingFunction> bindingFunctions) {
-    return new AutoValue_BindingClass(name, inputElement, bindingFunctions);
+      String packageName,
+      String name,
+      TypeElement inputElement,
+      ImmutableList<BindingFunction> bindingFunctions) {
+    return new AutoValue_BindingClass(packageName, name, inputElement, bindingFunctions);
   }
 }
