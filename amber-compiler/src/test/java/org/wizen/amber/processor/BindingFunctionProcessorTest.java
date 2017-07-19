@@ -24,5 +24,10 @@ public class BindingFunctionProcessorTest {
        .hasSourceEquivalentTo(
            JavaFileObjects.forResource(
                "processing/empty-binding-function/output/AmberEmptyBindingFunction.java"));
+    assertThat(compilation)
+        .generatedSourceFile("AmberEmptyBindingFunction_impl")
+        .hasSourceEquivalentTo(
+            JavaFileObjects.forResource(
+                "processing/empty-binding-function/output/AmberEmptyBindingFunction_impl.java"));
   }
 }

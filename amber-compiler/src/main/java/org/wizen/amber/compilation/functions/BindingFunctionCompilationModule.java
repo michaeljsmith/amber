@@ -1,7 +1,10 @@
 package org.wizen.amber.compilation.functions;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Optional;
 
+import javax.inject.Qualifier;
 import javax.lang.model.element.Modifier;
 
 import org.wizen.amber.extraction.BindingFunction;
@@ -19,11 +22,53 @@ public class BindingFunctionCompilationModule {
 
   @Provides
   @BindingFunctionCompilationResult
-  Optional<MethodSpec> provideBindingFunctionCompilationResult(
-      @InputBindingFunction BindingFunction bindingFunction) {
+  static Optional<CompiledFunction> provideBindingFunctionCompilationResult(
+      @CompiledApiFunction MethodSpec compiledApiFunction,
+      @CompiledImplFunction MethodSpec compiledImplFunction) {
     return Optional.of(
-        MethodSpec.methodBuilder(bindingFunction.name())
-            .addModifiers(MODIFERS_TO_ADD)
-            .build());
+        CompiledFunction.create(compiledApiFunction, compiledImplFunction));
   }
+
+  @Provides
+  @CompiledApiFunction
+  static MethodSpec provideCompiledApiFunction(@CompiledCommonFunction MethodSpec compiledCommonFunction) {
+    return compiledCommonFunction;
+  }
+
+  @Provides
+  @CompiledImplFunction
+  static MethodSpec provideCompiledImplFunction(@CompiledCommonFunction MethodSpec compiledCommonFunction) {
+    return compiledCommonFunction;
+  }
+
+  @Provides
+  @CompiledCommonFunction
+  static MethodSpec provideCompiledCommonFunction(@InputFunctionName String inputFunctionName) {
+    return MethodSpec.methodBuilder(inputFunctionName)
+        .addModifiers(MODIFERS_TO_ADD)
+        .build();
+  }
+
+  @Provides
+  @InputFunctionName
+  static String provideInputFunctionName(
+      @InputBindingFunction BindingFunction inputBindingFunction) {
+    return inputBindingFunction.name();
+  }
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface CompiledApiFunction {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface CompiledImplFunction {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface CompiledCommonFunction {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface InputFunctionName {}
 }

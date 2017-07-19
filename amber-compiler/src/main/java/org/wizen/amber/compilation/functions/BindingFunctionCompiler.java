@@ -7,5 +7,5 @@ import org.wizen.amber.extraction.BindingFunction;
 import com.squareup.javapoet.MethodSpec;
 
 public interface BindingFunctionCompiler {
-  Optional<MethodSpec> compiledFunction(BindingFunction bindingFunction);
+  Optional<CompiledFunction> compiledFunction(BindingFunction bindingFunction);
 }

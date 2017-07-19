@@ -5,10 +5,9 @@ import java.util.Optional;
 import org.wizen.amber.compilation.functions.BindingFunctionCompilationModule;
 import org.wizen.amber.compilation.functions.BindingFunctionCompilationResult;
 import org.wizen.amber.compilation.functions.BindingFunctionScope;
+import org.wizen.amber.compilation.functions.CompiledFunction;
 import org.wizen.amber.compilation.functions.InputBindingFunction;
 import org.wizen.amber.extraction.BindingFunction;
-
-import com.squareup.javapoet.MethodSpec;
 
 import dagger.BindsInstance;
 import dagger.Subcomponent;
@@ -17,7 +16,7 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {BindingFunctionCompilationModule.class})
 public interface BindingFunctionComponent {
   @BindingFunctionCompilationResult
-  Optional<MethodSpec> resultMethodSpec();
+  Optional<CompiledFunction> resultMethodSpec();
 
   @Subcomponent.Builder
   static interface Builder {

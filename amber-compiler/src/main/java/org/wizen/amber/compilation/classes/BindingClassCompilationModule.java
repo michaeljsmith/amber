@@ -10,6 +10,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 
 import org.wizen.amber.compilation.functions.BindingFunctionCompiler;
+import org.wizen.amber.compilation.functions.CompiledFunction;
 import org.wizen.amber.extraction.BindingClass;
 import org.wizen.amber.extraction.BindingFunction;
 
@@ -33,35 +34,101 @@ public class BindingClassCompilationModule {
   static Optional<CompiledClass> provideBindingClassCompilationResult(
       @InputBindingClass BindingClass bindingClass,
       @CompiledPackageName String compiledPackageName,
-      @CompiledClassName String compiledClassName,
-      BindingFunctionCompiler bindingFunctionCompiler,
-      @CompiledClassModifiers ImmutableSet<Modifier> compiledClassModifiers) {
-    ImmutableList<MethodSpec> methods =
-        bindingClass.bindingFunctions().stream()
-            .map(bindingFunctionCompiler::compiledFunction)
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .collect(ImmutableList.toImmutableList());
+      @CompiledApiClass TypeSpec compiledApiClass,
+      @CompiledImplClass TypeSpec compiledImplClass) {
     return Optional.of(
         CompiledClass.create(
             compiledPackageName,
-            TypeSpec.classBuilder(compiledClassName)
-                .addModifiers(compiledClassModifiers.toArray(new Modifier[0]))
-                .addMethods(methods)
-                .build(),
-            TypeSpec.classBuilder("foo").build(),
+            compiledApiClass,
+            compiledImplClass,
             bindingClass.inputElement()));
   }
 
   @Provides
-  @CompiledClassName
-  static String provideCompiledClassName(@InputBindingClass BindingClass bindingClass) {
-    return "Amber" + bindingClass.name();
+  @CompiledApiClass
+  static TypeSpec provideCompiledApiClass(
+      @CompiledApiClassName String compiledApiClassName,
+      @CompiledApiClassModifiers ImmutableSet<Modifier> compiledClassModifiers,
+      @CompiledApiMethods ImmutableList<MethodSpec> compiledApiMethods) {
+    return TypeSpec.classBuilder(compiledApiClassName)
+        .addModifiers(compiledClassModifiers.toArray(new Modifier[0]))
+        .addMethods(compiledApiMethods)
+        .build();
   }
 
   @Provides
-  @CompiledClassModifiers
-  static ImmutableSet<Modifier> provideCompiledClassModifiers(
+  @CompiledImplClass
+  static TypeSpec provideCompiledImplClass(
+      @CompiledImplClassName String compiledImplClassName,
+      @CompiledImplClassModifiers ImmutableSet<Modifier> compiledImplClassModifiers,
+      @CompiledImplMethods ImmutableList<MethodSpec> compiledImplMethods) {
+    return TypeSpec.classBuilder(compiledImplClassName)
+        .addModifiers(compiledImplClassModifiers.toArray(new Modifier[0]))
+        .addMethods(compiledImplMethods)
+        .build();
+  }
+
+  @Provides
+  @CompiledApiClassName
+  static String provideCompiledApiClassName(@InputClassName String inputClassName) {
+    return "Amber" + inputClassName;
+  }
+
+  @Provides
+  @CompiledImplClassName
+  static String provideCompiledImplClassName(@InputClassName String inputClassName) {
+    return "Amber" + inputClassName + "_impl";
+  }
+
+  @Provides
+  @CompiledMethods
+  static ImmutableList<CompiledFunction> provideCompiledMethods(
+      @InputBindingClass BindingClass bindingClass,
+      BindingFunctionCompiler bindingFunctionCompiler) {
+    return bindingClass.bindingFunctions().stream()
+        .map(bindingFunctionCompiler::compiledFunction)
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .collect(ImmutableList.toImmutableList());
+  }
+
+  @Provides
+  @CompiledApiMethods
+  static ImmutableList<MethodSpec> provideCompiledApiMethods(
+      @CompiledMethods ImmutableList<CompiledFunction> compiledMethods) {
+    return compiledMethods
+        .stream()
+        .map(CompiledFunction::apiMethod)
+        .collect(ImmutableList.toImmutableList());
+  }
+
+  @Provides
+  @CompiledImplMethods
+  static ImmutableList<MethodSpec> provideCompiledImplMethods(
+      @CompiledMethods ImmutableList<CompiledFunction> compiledMethods) {
+    return compiledMethods
+        .stream()
+        .map(CompiledFunction::implMethod)
+        .collect(ImmutableList.toImmutableList());
+  }
+
+  @Provides
+  @CompiledApiClassModifiers
+  static ImmutableSet<Modifier> provideCompiledApiClassModifiers(
+      @CompiledClassCommonModifiers ImmutableSet<Modifier> compiledClassCommonModifiers) {
+    return compiledClassCommonModifiers;
+  }
+
+  @Provides
+  @CompiledImplClassModifiers
+  static ImmutableSet<Modifier> provideCompiledImplClassModifiers(
+      @CompiledClassCommonModifiers ImmutableSet<Modifier> compiledClassCommonModifiers) {
+    return compiledClassCommonModifiers;
+  }
+
+  @Provides
+  @CompiledClassCommonModifiers
+  static ImmutableSet<Modifier> provideCompiledClassCommonModifiers(
       @InputClassElement TypeElement inputClassElement) {
     Set<Modifier> modifiers = inputClassElement.getModifiers();
     ImmutableSet.Builder<Modifier> results = ImmutableSet.builder();
@@ -107,15 +174,47 @@ public class BindingClassCompilationModule {
 
   @Retention(RetentionPolicy.SOURCE)
   @Qualifier
+  private @interface CompiledApiClass {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface CompiledImplClass {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
   private @interface CompiledPackageName {}
 
   @Retention(RetentionPolicy.SOURCE)
   @Qualifier
-  private @interface CompiledClassName {}
+  private @interface CompiledApiClassName {}
 
   @Retention(RetentionPolicy.SOURCE)
   @Qualifier
-  private @interface CompiledClassModifiers {}
+  private @interface CompiledImplClassName {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface CompiledMethods {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface CompiledApiMethods {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface CompiledImplMethods {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface CompiledApiClassModifiers {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface CompiledImplClassModifiers {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface CompiledClassCommonModifiers {}
 
   @Retention(RetentionPolicy.SOURCE)
   @Qualifier
