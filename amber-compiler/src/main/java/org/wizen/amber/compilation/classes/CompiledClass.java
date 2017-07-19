@@ -10,12 +10,14 @@ public abstract class CompiledClass {
 
   public abstract String packageName();
 
-  public abstract TypeSpec typeSpec();
+  public abstract TypeSpec apiTypeSpec();
+
+  public abstract TypeSpec implTypeSpec();
 
   public abstract TypeElement inputElement();
 
   public static CompiledClass create(
-      String packageName, TypeSpec typeSpec, TypeElement inputElement) {
-    return new AutoValue_CompiledClass(packageName, typeSpec, inputElement);
+      String packageName, TypeSpec apiTypeSpec, TypeSpec implTypeSpec, TypeElement inputElement) {
+    return new AutoValue_CompiledClass(packageName, apiTypeSpec, implTypeSpec, inputElement);
   }
 }

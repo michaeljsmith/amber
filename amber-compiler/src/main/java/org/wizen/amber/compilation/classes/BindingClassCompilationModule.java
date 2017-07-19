@@ -49,6 +49,7 @@ public class BindingClassCompilationModule {
                 .addModifiers(compiledClassModifiers.toArray(new Modifier[0]))
                 .addMethods(methods)
                 .build(),
+            TypeSpec.classBuilder("foo").build(),
             bindingClass.inputElement()));
   }
 
