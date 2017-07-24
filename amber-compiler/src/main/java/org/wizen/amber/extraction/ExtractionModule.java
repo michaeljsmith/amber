@@ -28,7 +28,8 @@ public class ExtractionModule {
   static ImmutableList<BindingClass> provideBindingClasses(
       @ClassesWithAnnotatedFunctions ImmutableSet<TypeElement> classesWithAnnotatedFunctions,
       BindingClassElementConvertor bindingClassElementConvertor) {
-    return classesWithAnnotatedFunctions.stream()
+    return classesWithAnnotatedFunctions
+        .stream()
         .map(bindingClassElementConvertor::bindingClassFromElement)
         .filter(Optional::isPresent)
         .map(Optional::get)
@@ -38,12 +39,13 @@ public class ExtractionModule {
   @Provides
   @ClassesWithAnnotatedFunctions
   static ImmutableSet<TypeElement> provideClassesWithAnnotatedFunctions(
-      @AnnotatedElementsLoader Function<String, Collection<? extends Element>>
-        annotatedElementsLoader,
+      @AnnotatedElementsLoader
+          Function<String, Collection<? extends Element>> annotatedElementsLoader,
       EnclosingClassFinder enclosingClassFinder) {
     String annotationName = org.wizen.amber.BindingFunction.class.getCanonicalName();
     Collection<? extends Element> annotatedElements = annotatedElementsLoader.apply(annotationName);
-    return annotatedElements.stream()
+    return annotatedElements
+        .stream()
         .map(enclosingClassFinder::enclosingClass)
         .filter(Optional::isPresent)
         .map(Optional::get)
@@ -54,12 +56,13 @@ public class ExtractionModule {
   @AnnotatedElementsLoader
   static Function<String, Collection<? extends Element>> provideAnnotatedElementsLoader(
       RoundEnvironment roundEnvironment,
-      @InputAnnotationsByName ImmutableMultimap<String, ? extends TypeElement>
-          inputAnnotationsByName) {
+      @InputAnnotationsByName
+          ImmutableMultimap<String, ? extends TypeElement> inputAnnotationsByName) {
     return name -> {
       Collection<? extends TypeElement> typeElements =
           inputAnnotationsByName.asMap().getOrDefault(name, ImmutableList.of());
-      return typeElements.stream()
+      return typeElements
+          .stream()
           .flatMap(typeElement -> roundEnvironment.getElementsAnnotatedWith(typeElement).stream())
           .collect(ImmutableList.toImmutableList());
     };

@@ -9,9 +9,7 @@ import org.wizen.amber.output.OutputWriter;
 import dagger.BindsInstance;
 import dagger.Component;
 
-@Component(
-    modules = OutputModule.class,
-    dependencies = CompilationComponent.class)
+@Component(modules = OutputModule.class, dependencies = CompilationComponent.class)
 public interface OutputComponent {
   OutputWriter outputWriter();
 

@@ -20,10 +20,10 @@ public class BindingFunctionProcessorTest {
                     "processing/empty-binding-function/input/EmptyBindingFunction.java"));
     assertThat(compilation).succeeded();
     assertThat(compilation)
-       .generatedSourceFile("AmberEmptyBindingFunction")
-       .hasSourceEquivalentTo(
-           JavaFileObjects.forResource(
-               "processing/empty-binding-function/output/AmberEmptyBindingFunction.java"));
+        .generatedSourceFile("AmberEmptyBindingFunction")
+        .hasSourceEquivalentTo(
+            JavaFileObjects.forResource(
+                "processing/empty-binding-function/output/AmberEmptyBindingFunction.java"));
     assertThat(compilation)
         .generatedSourceFile("AmberEmptyBindingFunction_impl")
         .hasSourceEquivalentTo(

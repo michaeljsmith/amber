@@ -18,6 +18,7 @@ import com.google.common.collect.ImmutableSet;
 class BindingFunctionElementConvertor {
 
   private final Messager messager;
+  @SuppressWarnings("unused")
   private final TypeElement bindingClassElement;
 
   public BindingFunctionElementConvertor(

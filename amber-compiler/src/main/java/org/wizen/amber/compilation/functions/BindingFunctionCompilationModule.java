@@ -25,28 +25,27 @@ public class BindingFunctionCompilationModule {
   static Optional<CompiledFunction> provideBindingFunctionCompilationResult(
       @CompiledApiFunction MethodSpec compiledApiFunction,
       @CompiledImplFunction MethodSpec compiledImplFunction) {
-    return Optional.of(
-        CompiledFunction.create(compiledApiFunction, compiledImplFunction));
+    return Optional.of(CompiledFunction.create(compiledApiFunction, compiledImplFunction));
   }
 
   @Provides
   @CompiledApiFunction
-  static MethodSpec provideCompiledApiFunction(@CompiledCommonFunction MethodSpec compiledCommonFunction) {
+  static MethodSpec provideCompiledApiFunction(
+      @CompiledCommonFunction MethodSpec compiledCommonFunction) {
     return compiledCommonFunction;
   }
 
   @Provides
   @CompiledImplFunction
-  static MethodSpec provideCompiledImplFunction(@CompiledCommonFunction MethodSpec compiledCommonFunction) {
+  static MethodSpec provideCompiledImplFunction(
+      @CompiledCommonFunction MethodSpec compiledCommonFunction) {
     return compiledCommonFunction;
   }
 
   @Provides
   @CompiledCommonFunction
   static MethodSpec provideCompiledCommonFunction(@InputFunctionName String inputFunctionName) {
-    return MethodSpec.methodBuilder(inputFunctionName)
-        .addModifiers(MODIFERS_TO_ADD)
-        .build();
+    return MethodSpec.methodBuilder(inputFunctionName).addModifiers(MODIFERS_TO_ADD).build();
   }
 
   @Provides

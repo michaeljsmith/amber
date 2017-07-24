@@ -19,10 +19,11 @@ import dagger.Subcomponent;
 
 @BindingClassScope
 @Subcomponent(
-    modules = {
-        BindingClassComponent.SelfModule.class,
-        BindingClassCompilationModule.class,
-    })
+  modules = {
+    BindingClassComponent.SelfModule.class,
+    BindingClassCompilationModule.class,
+  }
+)
 public interface BindingClassComponent {
   @Module(subcomponents = BindingFunctionComponent.class)
   static class SelfModule {
@@ -32,7 +33,11 @@ public interface BindingClassComponent {
     static BindingFunctionCompiler provideBindingFunctionCompiler(
         Provider<BindingFunctionComponent.Builder> bindingFunctionComponentBuilderProvider) {
       return bindingFunction ->
-          bindingFunctionComponentBuilderProvider.get().setBindingFunction(bindingFunction).build().resultMethodSpec();
+          bindingFunctionComponentBuilderProvider
+              .get()
+              .setBindingFunction(bindingFunction)
+              .build()
+              .resultMethodSpec();
     }
   }
 

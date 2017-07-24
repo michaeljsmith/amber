@@ -8,8 +8,6 @@ import org.wizen.amber.extraction.BindingClass;
 import org.wizen.amber.extraction.BindingClasses;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.squareup.javapoet.TypeSpec;
 
 import dagger.Module;
 import dagger.Provides;

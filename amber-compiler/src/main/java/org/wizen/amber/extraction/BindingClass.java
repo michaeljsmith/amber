@@ -8,8 +8,11 @@ import com.google.common.collect.ImmutableList;
 @AutoValue
 public abstract class BindingClass {
   public abstract String packageName();
+
   public abstract String name();
+
   public abstract TypeElement inputElement();
+
   public abstract ImmutableList<BindingFunction> bindingFunctions();
 
   public static BindingClass create(

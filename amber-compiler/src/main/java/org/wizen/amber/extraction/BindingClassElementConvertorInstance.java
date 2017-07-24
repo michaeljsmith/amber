@@ -11,8 +11,9 @@ import com.google.auto.factory.Provided;
 import com.google.common.collect.ImmutableList;
 
 @AutoFactory(
-    className = "BindingClassElementConvertor",
-    extending = BindingClassElementConvertorInstance.Factory.class)
+  className = "BindingClassElementConvertor",
+  extending = BindingClassElementConvertorInstance.Factory.class
+)
 class BindingClassElementConvertorInstance {
   private final Messager messager;
   private final BindingFunctionElementConvertor bindingFunctionElementConvertor;
@@ -53,15 +54,17 @@ class BindingClassElementConvertorInstance {
     String qualifiedName = bindingClassElement.getQualifiedName().toString();
     int lastDot = qualifiedName.lastIndexOf('.');
     if (lastDot > 0) {
-        return qualifiedName.substring(0, lastDot);
+      return qualifiedName.substring(0, lastDot);
     }
 
     messager.printMessage(Kind.ERROR, "Cannot extract package name from type", bindingClassElement);
     throw new BindingClassConversionException();
   }
-  
+
   private ImmutableList<BindingFunction> bindingFunctions() {
-    return bindingClassElement.getEnclosedElements().stream()
+    return bindingClassElement
+        .getEnclosedElements()
+        .stream()
         .map(bindingFunctionElementConvertor::bindingFunctionForElement)
         .filter(Optional::isPresent)
         .map(Optional::get)

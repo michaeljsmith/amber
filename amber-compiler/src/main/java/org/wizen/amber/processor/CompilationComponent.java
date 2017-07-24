@@ -1,7 +1,5 @@
 package org.wizen.amber.processor;
 
-import java.util.Optional;
-
 import javax.inject.Provider;
 
 import org.wizen.amber.compilation.CompilationModule;
@@ -11,19 +9,17 @@ import org.wizen.amber.compilation.classes.CompiledClass;
 import org.wizen.amber.extraction.BindingClasses;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.squareup.javapoet.TypeSpec;
-
 import dagger.Component;
 import dagger.Module;
 import dagger.Provides;
 
 @Component(
-    modules = {
-        CompilationComponent.SelfModule.class,
-        CompilationModule.class,
-    },
-    dependencies = ExtractionComponent.class)
+  modules = {
+    CompilationComponent.SelfModule.class,
+    CompilationModule.class,
+  },
+  dependencies = ExtractionComponent.class
+)
 public interface CompilationComponent {
   @CompiledClasses
   ImmutableList<CompiledClass> compiledClasses();
@@ -41,8 +37,11 @@ public interface CompilationComponent {
     static BindingClassCompiler provideBindingClassCompiler(
         Provider<BindingClassComponent.Builder> bindingClassComponentBuilderProvider) {
       return bindingClass ->
-          bindingClassComponentBuilderProvider.get()
-              .setBindingClass(bindingClass).build().resultTypeSpec();
+          bindingClassComponentBuilderProvider
+              .get()
+              .setBindingClass(bindingClass)
+              .build()
+              .resultTypeSpec();
     }
   }
 }

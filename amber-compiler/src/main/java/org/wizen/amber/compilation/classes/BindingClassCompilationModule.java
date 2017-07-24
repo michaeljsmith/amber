@@ -24,8 +24,7 @@ import dagger.Provides;
 
 @Module
 public class BindingClassCompilationModule {
-  private static final ImmutableSet<Modifier> MODIFIERS_TO_FORCE =
-      ImmutableSet.of(Modifier.FINAL);
+  private static final ImmutableSet<Modifier> MODIFIERS_TO_FORCE = ImmutableSet.of(Modifier.FINAL);
   private static final ImmutableSet<Modifier> MODIFIERS_TO_COPY =
       ImmutableSet.of(Modifier.PUBLIC, Modifier.PRIVATE, Modifier.PROTECTED);
 
@@ -38,10 +37,7 @@ public class BindingClassCompilationModule {
       @CompiledImplClass TypeSpec compiledImplClass) {
     return Optional.of(
         CompiledClass.create(
-            compiledPackageName,
-            compiledApiClass,
-            compiledImplClass,
-            bindingClass.inputElement()));
+            compiledPackageName, compiledApiClass, compiledImplClass, bindingClass.inputElement()));
   }
 
   @Provides
@@ -85,7 +81,9 @@ public class BindingClassCompilationModule {
   static ImmutableList<CompiledFunction> provideCompiledMethods(
       @InputBindingClass BindingClass bindingClass,
       BindingFunctionCompiler bindingFunctionCompiler) {
-    return bindingClass.bindingFunctions().stream()
+    return bindingClass
+        .bindingFunctions()
+        .stream()
         .map(bindingFunctionCompiler::compiledFunction)
         .filter(Optional::isPresent)
         .map(Optional::get)

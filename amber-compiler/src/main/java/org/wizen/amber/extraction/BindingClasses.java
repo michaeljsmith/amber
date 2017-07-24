@@ -6,5 +6,4 @@ import javax.inject.Qualifier;
 
 @Retention(RetentionPolicy.SOURCE)
 @Qualifier
-public @interface BindingClasses {
-}
+public @interface BindingClasses {}

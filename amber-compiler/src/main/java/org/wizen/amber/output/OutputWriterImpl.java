@@ -25,9 +25,9 @@ public class OutputWriterImpl implements OutputWriter {
 
   @Inject
   public OutputWriterImpl(
-        @CompiledClasses ImmutableList<CompiledClass> compiledClasses,
-        Filer filer,
-        Messager messager) {
+      @CompiledClasses ImmutableList<CompiledClass> compiledClasses,
+      Filer filer,
+      Messager messager) {
     this.compiledClasses = compiledClasses;
     this.filer = filer;
     this.messager = messager;
@@ -45,15 +45,13 @@ public class OutputWriterImpl implements OutputWriter {
 
   private void writeClassFile(String packageName, TypeSpec typeSpec, TypeElement inputElement) {
     try {
-      JavaFile generatedFile =
-          JavaFile.builder(packageName, typeSpec).build();
+      JavaFile generatedFile = JavaFile.builder(packageName, typeSpec).build();
       JavaFileObject builderFile = filer.createSourceFile(typeSpec.name);
       try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
         generatedFile.writeTo(out);
       }
     } catch (IOException e) {
-      messager.printMessage(
-          ERROR, "Unable to open file for writing: " + e, inputElement);
+      messager.printMessage(ERROR, "Unable to open file for writing: " + e, inputElement);
     }
   }
 }

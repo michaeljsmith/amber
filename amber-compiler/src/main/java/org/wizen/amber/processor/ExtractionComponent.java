@@ -18,7 +18,8 @@ import dagger.Component;
 
 @Component(modules = ExtractionModule.class)
 public interface ExtractionComponent {
-  @BindingClasses ImmutableList<BindingClass> bindingClasses();
+  @BindingClasses
+  ImmutableList<BindingClass> bindingClasses();
 
   @Component.Builder
   public static interface Builder {
