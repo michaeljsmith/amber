@@ -2,13 +2,17 @@ package org.wizen.amber.compilation.functions;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Qualifier;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.VariableElement;
 
 import org.wizen.amber.extraction.BindingFunction;
 
+import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableSet;
 import com.squareup.javapoet.MethodSpec;
 
@@ -48,11 +52,36 @@ public class BindingFunctionCompilationModule {
     return MethodSpec.methodBuilder(inputFunctionName).addModifiers(MODIFERS_TO_ADD).build();
   }
 
+  @AutoValue
+  abstract static class CompiledParameterInfo {
+    void asdf();
+  }
+
+  @Provides
+  static CompiledParameterInfo provideCompiledParameterInfo(
+      @InputParameters List<? extends VariableElement> inputParameters) {
+    
+  }
+
+  @Provides
+  @InputParameters
+  static List<? extends VariableElement> provideInputParameters(
+      @InputFunctionElement ExecutableElement element) {
+    return element.getParameters();
+  }
+
   @Provides
   @InputFunctionName
   static String provideInputFunctionName(
       @InputBindingFunction BindingFunction inputBindingFunction) {
     return inputBindingFunction.name();
+  }
+
+  @Provides
+  @InputFunctionElement
+  static ExecutableElement provideInputFunctionElement(
+      @InputBindingFunction BindingFunction inputBindingFunction) {
+    return inputBindingFunction.element();
   }
 
   @Retention(RetentionPolicy.SOURCE)
@@ -70,4 +99,12 @@ public class BindingFunctionCompilationModule {
   @Retention(RetentionPolicy.SOURCE)
   @Qualifier
   private @interface InputFunctionName {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface InputFunctionElement {}
+
+  @Retention(RetentionPolicy.SOURCE)
+  @Qualifier
+  private @interface InputParameters {}
 }
